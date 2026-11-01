@@ -57,12 +57,16 @@ apiClient.interceptors.response.use(
 
     if (error.response) {
       status = error.response.status
+      const data = error.response.data
+      const raw =
+        data?.message ||
+        data?.msg ||
+        data?.error?.message ||
+        data?.error ||
+        data?.error_description
+      // Pastikan selalu string (Vercel mengirim { error: { code, message } })
       message =
-        error.response.data?.message ||
-        error.response.data?.msg ||
-        error.response.data?.error ||
-        error.response.data?.error_description ||
-        `Server error (${status})`
+        typeof raw === 'string' && raw ? raw : `Server error (${status})`
     } else if (error.request) {
       message =
         'Unable to reach the server. Check your connection and try again.'

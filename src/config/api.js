@@ -1,3 +1,4 @@
+
 import axios from 'axios'
 
 // ---------------------------------------------------------------------------
@@ -56,23 +57,18 @@ apiClient.interceptors.response.use(
     let status = null
 
     if (error.response) {
-      status = error.response.status
-      const data = error.response.data
-      const raw =
-        data?.message ||
-        data?.msg ||
-        data?.error?.message ||
-        data?.error ||
-        data?.error_description
-      // Pastikan selalu string (Vercel mengirim { error: { code, message } })
-      message =
-        typeof raw === 'string' && raw ? raw : `Server error (${status})`
-    } else if (error.request) {
-      message =
-        'Unable to reach the server. Check your connection and try again.'
-    } else {
-      message = error.message || message
-    }
+  status = error.response.status
+  const data = error.response.data
+  const raw =
+    data?.message ||
+    data?.msg ||
+    data?.error?.message ||
+    data?.error ||
+    data?.error_description
+  // Pastikan selalu string (Vercel mengirim { error: { code, message } })
+  message =
+    typeof raw === 'string' && raw ? raw : `Server error (${status})`
+}
 
     return Promise.reject({
       message,
@@ -84,3 +80,6 @@ apiClient.interceptors.response.use(
 )
 
 export { apiClient, BASE_URL, SUPABASE_KEY, IS_SUPABASE }
+
+
+
